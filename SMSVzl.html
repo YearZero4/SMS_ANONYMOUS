@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>SMSVzla</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="htmlgeneric">
+<meta name="author" content="PGX">
+<meta name="keywords" content="HTML5,CSS,JS,PHP">
+
+<style>
+#msg::placeholder{
+color:black;
+}
+</style>
+</head>
+<body style="text-align:center;background-color:#000000;color:#ffffff;">
+<marquee bgcolor="blue">Bienvenido a SMSVzl , estamos para enviar mensajes anonimos a su objetivo</marquee>
+<H3>ENVIAR SMS ANONIMO</H3>
+
+<select style="height:30px;" id="operador" name="operador">
+ <option selected="true" disabled="disabled">Operador</option>
+  <option value="412">412 [DIGITEL]</option>
+  <option value="414">414 [MOVISTAR]</option>
+  <option value="424">424 [MOVISTAR]</option>
+  <option value="416">416 [MOVILNET]</option>
+  <option value="426">426 [MOVILNET]</option>
+</select>
+
+
+<input type="text"  id="numeroTelefono" name="numeroTelefono" maxlength="7"><p>
+<textarea style="width:400px;background-color:blue;color:#ffffff;" placeholder="Mensaje que quieres enviar..." id="mensaje" name="mensaje"></textarea><p>
+<button style="height:40px;width:100px;" onclick="enviarMensaje()">ENVIAR</button>
+<h2 id="estado1"></h2>
+<p id="status"></p>
+
+<script type="text/javascript"> 
+function enviarMensaje() { 
+window.alert('pgxmessage : Click en aceptar/continuar y\nespere la respuesta a su solicitud que le sera\nmostrada en unos segundos.');
+var codigoPais = document.getElementById('operador').value; 
+var numeroTelefono = document.getElementById('numeroTelefono').value; 
+var mensaje = document.getElementById('mensaje').value; 
+var numeroCompleto = '+58' + codigoPais + numeroTelefono; 
+fetch('https://textbelt.com/text', { 
+method: 'post', 
+headers: { 'Content-Type': 'application/json' }, 
+body: JSON.stringify({ phone: numeroCompleto, 
+message: mensaje, 
+key: 'textbelt', 
+}), 
+}) .then(response => { if(response.ok) { return response.json(); 
+} else { throw new Error('API fallida'); 
+} }) .then(data => { console.log(data); 
+document.getElementById('estado1').innerHTML = 'RESULTADO DE OPERACION'; 
+document.getElementById('status').innerHTML = 'Estado: ' + data.success; 
+}) .catch(error => { console.log(error); document.getElementById('status').innerHTML = 'SIN CONEXION A INTERNET'; });
+
+ 
+} 
+</script>
+</body>
+</html>
